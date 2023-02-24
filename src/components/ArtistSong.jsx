@@ -7,7 +7,6 @@ import {
   removeFromFavAction,
 } from "../redux/actions";
 import { Heart, HeartFill } from "react-bootstrap-icons";
-import { useEffect } from "react";
 
 export const ArtistSong = ({ song }) => {
   const dispatch = useDispatch();
@@ -32,6 +31,7 @@ export const ArtistSong = ({ song }) => {
         className="position-absolute p-2 bgGreen"
         onClick={() => checkFavs()}
       >
+        {/* Changes button icon if the song is already present in favorites */}
         {favoriteSongs.find((el) => el.id === song.id) === undefined ? (
           <Heart color="white" size={24} />
         ) : (

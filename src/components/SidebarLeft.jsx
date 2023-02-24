@@ -1,10 +1,23 @@
+import { useState } from "react";
 import { Button, Form, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../img/Spotify_Logo.png";
 
 export const SidebarLeft = () => {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    navigate("/search/" + query);
+  };
+
   return (
-    <div className="col-2">
+    <div className="col-2 d-none d-md-flex">
       <Navbar
         expand="md"
         bg="bg-navbar"
@@ -38,13 +51,13 @@ export const SidebarLeft = () => {
                   </Link>
                 </li>
                 <li>
-                  <a className="nav-item nav-link" href="/">
+                  <Link to={"/favorites"} className="nav-item nav-link">
                     <i className="fas fa-book-open fa-lg"></i>&nbsp; Your
                     Library
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <Form className="input-group mt-3">
+                  <Form className="input-group mt-3" onSubmit={handleSubmit}>
                     <Form.Control
                       type="text"
                       className="form-control mb-2"
@@ -52,6 +65,7 @@ export const SidebarLeft = () => {
                       placeholder="Search"
                       aria-label="Search"
                       aria-describedby="basic-addon2"
+                      onChange={handleChange}
                     />
                     <div
                       className="input-group-append"
@@ -61,7 +75,7 @@ export const SidebarLeft = () => {
                         variant="outline-secondary"
                         size="sm"
                         id="button-addon1"
-                        // onClick=
+                        type="submit"
                       >
                         GO
                       </Button>

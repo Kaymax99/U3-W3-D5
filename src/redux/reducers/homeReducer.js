@@ -9,7 +9,7 @@ const initialState = {
   shownError: "",
 };
 
-export const homeSongsReducer = (state = initialState, action) => {
+export const homeReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ROCK_SONGS:
       return {

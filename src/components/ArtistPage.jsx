@@ -1,49 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Row, Spinner } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  getInfoAction,
-  getSongsAction,
-  GET_ARTIST,
-  GET_ARTIST_SONGS,
-} from "../redux/actions";
 import { ArtistSong } from "./ArtistSong";
 
-export const ArtistPage = ({ headers }) => {
+export const ArtistPage = ({ fetchFn, headers }) => {
   const params = useParams();
   const artistEndpoint =
     "https://striveschool-api.herokuapp.com/api/deezer/artist/";
   const searchEndpoint =
     "https://striveschool-api.herokuapp.com/api/deezer/search?q=";
-  const dispatch = useDispatch();
-  const selectedArtist = useSelector((state) => state.lastViewedArtist.artist);
-  const selectedArtistTracks = useSelector(
-    (state) => state.lastViewedArtist.trackList
-  );
+  const [artist, setArtist] = useState(null);
+  const [trackList, setTrackList] = useState(null);
 
   useEffect(() => {
-    dispatch(
-      getInfoAction(artistEndpoint, headers, params.artistID, GET_ARTIST)
-    );
-    dispatch(
-      getInfoAction(searchEndpoint, headers, params.artistID, GET_ARTIST_SONGS)
-    );
+    fetchFn(artistEndpoint, headers, params.artistID, setArtist);
   }, []);
 
-  //   useEffect(() => {
-  //     if (selectedArtistTracks) {
-  //       console.log(selectedArtistTracks);
-  //     }
-  //   }, [selectedArtistTracks]);
+  useEffect(() => {
+    if (artist) {
+      fetchFn(searchEndpoint, headers, artist.name, setTrackList);
+    }
+  }, [artist]);
 
   return (
     <Col md={9} className="offset-md-3 mainPage">
       <Row>
-        {selectedArtist ? (
-          <Col xs={12} md={10} lg={10} className="mt-5">
-            <h2 className="titleMain">{selectedArtist.name}</h2>
-            <div id="followers">{selectedArtist.nb_fan} followers</div>
+        {artist ? (
+          <Col xs={12} className="mt-5">
+            <h2 className="titleMain">{artist.name}</h2>
+            <div id="followers">{artist.nb_fan} followers</div>
             <div
               className="d-flex justify-content-center"
               id="button-container"
@@ -65,7 +50,9 @@ export const ArtistPage = ({ headers }) => {
             </div>
           </Col>
         ) : (
-          <Spinner animation="border" variant="success" />
+          <Col xs={12} className="text-center mt-5">
+            <Spinner animation="border" variant="success" />
+          </Col>
         )}
       </Row>
       <Row className="mb-3">
@@ -75,11 +62,15 @@ export const ArtistPage = ({ headers }) => {
           </div>
           <div className="pt-5 mb-5">
             <Row id="apiLoaded">
-              {selectedArtistTracks
-                ? selectedArtistTracks.data.map((song) => (
-                    <ArtistSong key={song.id} song={song}></ArtistSong>
-                  ))
-                : ""}
+              {trackList ? (
+                trackList.data.map((song) => (
+                  <ArtistSong key={song.id} song={song}></ArtistSong>
+                ))
+              ) : (
+                <Col xs={12} className="text-center mt-5">
+                  <Spinner animation="border" variant="success" />
+                </Col>
+              )}
             </Row>
           </div>
         </Col>

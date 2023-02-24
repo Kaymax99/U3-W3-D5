@@ -11,10 +11,10 @@ export const Player = () => {
   return (
     <Container fluid className="pt-1 fixed-bottom bg-container">
       <Row>
-        <Col lg={10} className="offset-1 offset-md-3 d-flex px-0">
+        <Col lg={10} className="offset-md-3 d-flex px-0">
           <Col
-            xs={3}
-            className="px-0 text-light align-self-center d-flex align-items-center"
+            sm={3}
+            className="px-0 ml-5 text-light align-self-center d-none d-sm-flex align-items-center"
           >
             {song ? (
               <>
@@ -40,12 +40,12 @@ export const Player = () => {
               ""
             )}
           </Col>
-          <Col xs={9} md={8} className="pl-0">
+          <Col sm={8} md={7} className="pl-0">
             <Row>
               <Col
                 xs={6}
                 md={4}
-                lg={2}
+                lg={3}
                 className="offset-3 offset-md-4 offset-lg-5 playerControls mt-1"
               >
                 <Row>

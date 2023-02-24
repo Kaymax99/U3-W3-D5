@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getSongsAction,
@@ -13,9 +13,9 @@ export const Home = ({ headers }) => {
   const baseEndpoint =
     "https://striveschool-api.herokuapp.com/api/deezer/search?q=";
   const dispatch = useDispatch();
-  const rockSongs = useSelector((state) => state.songs.rockResults);
-  const popSongs = useSelector((state) => state.songs.popResults);
-  const hipHopSongs = useSelector((state) => state.songs.hipHopResults);
+  const rockSongs = useSelector((state) => state.home.rockResults);
+  const popSongs = useSelector((state) => state.home.popResults);
+  const hipHopSongs = useSelector((state) => state.home.hipHopResults);
 
   let rockArtists = [
     "queen",
@@ -67,7 +67,15 @@ export const Home = ({ headers }) => {
       }
     }
     // console.log(rockRandomArtists, popRandomArtists, hipHopRandomArtists);
-    getArtists(rockRandomArtists, popRandomArtists, hipHopRandomArtists);
+
+    // Sets page content only if home state is empty. Uses persisted state in order to avoid reloading home page
+    if (
+      (rockSongs.length === 0) &
+      (popSongs.length === 0) &
+      (hipHopSongs.length === 0)
+    ) {
+      getArtists(rockRandomArtists, popRandomArtists, hipHopRandomArtists);
+    }
   }, []);
 
   const getArtists = (array1, array2, array3) => {
@@ -106,60 +114,72 @@ export const Home = ({ headers }) => {
   return (
     <Col md={9} className="offset-md-3 mainPage">
       <Row>
-        <Col xs={10}>
+        <Col xs={12}>
           <div id="searchResults" style={{ display: "none" }}>
-            <h2>Search Results</h2>
+            <h2 className="ml-4">Search Results</h2>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 imgLinks py-3"></Row>
           </div>
         </Col>
       </Row>
       <Row>
-        <Col xs={10}>
+        <Col xs={12}>
           <div id="rock">
-            <h2>Rock Classics</h2>
+            <h2 className="ml-4">Rock Classics</h2>
             <Row
               className="row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 imgLinks py-3"
               id="rockSection"
             >
-              {rockSongs.length === 4
-                ? rockSongs.map((songData) => (
-                    <AlbumCard key={songData.id} songData={songData} />
-                  ))
-                : ""}
+              {rockSongs.length === 4 ? (
+                rockSongs.map((songData) => (
+                  <AlbumCard key={songData.id} songData={songData} />
+                ))
+              ) : (
+                <div className="text-center">
+                  <Spinner animation="border" variant="success" />
+                </div>
+              )}
             </Row>
           </div>
         </Col>
       </Row>
       <Row>
-        <Col xs={10}>
+        <Col xs={12}>
           <div id="pop">
-            <h2>Pop Culture</h2>
+            <h2 className="ml-4">Pop Culture</h2>
             <Row
               className="row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 imgLinks py-3"
               id="popSection"
             >
-              {popSongs.length === 4
-                ? popSongs.map((songData) => (
-                    <AlbumCard key={songData.id} songData={songData} />
-                  ))
-                : ""}
+              {popSongs.length === 4 ? (
+                popSongs.map((songData) => (
+                  <AlbumCard key={songData.id} songData={songData} />
+                ))
+              ) : (
+                <div className="text-center">
+                  <Spinner animation="border" variant="success" />
+                </div>
+              )}
             </Row>
           </div>
         </Col>
       </Row>
       <Row>
-        <Col xs={10}>
+        <Col xs={12}>
           <div id="hiphop">
-            <h2>#HipHop</h2>
+            <h2 className="ml-4">#HipHop</h2>
             <Row
               className="row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 imgLinks py-3"
               id="hipHopSection"
             >
-              {hipHopSongs.length === 4
-                ? hipHopSongs.map((songData) => (
-                    <AlbumCard key={songData.id} songData={songData} />
-                  ))
-                : ""}
+              {hipHopSongs.length === 4 ? (
+                hipHopSongs.map((songData) => (
+                  <AlbumCard key={songData.id} songData={songData} />
+                ))
+              ) : (
+                <div className="text-center">
+                  <Spinner animation="border" variant="success" />
+                </div>
+              )}
             </Row>
           </div>
         </Col>

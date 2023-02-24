@@ -1,18 +1,18 @@
-import { GET_ALBUM } from "../actions";
+import { GET_SEARCH } from "../actions";
 
 const initialState = {
-  album: null,
+  results: null,
   isLoading: false,
   hasError: false,
   shownError: "",
 };
 
-export const albumReducer = (state = initialState, action) => {
+export const searchReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_ALBUM:
+    case GET_SEARCH:
       return {
         ...state,
-        album: action.payload,
+        results: action.payload,
       };
 
     default:

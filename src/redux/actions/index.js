@@ -10,6 +10,7 @@ export const GET_ARTIST_SONGS = "GET_ARTIST_SONGS";
 export const ADD_TO_PLAYER = "ADD_TO_PLAYER";
 export const ADD_TO_FAV = "ADD_TO_FAV";
 export const REMOVE_FROM_FAV = "REMOVE_FROM_FAV";
+export const GET_SEARCH = "GET_SEARCH";
 
 export const getSongsAction = (baseEndpoint, headers, query, actionType) => {
   return async (dispatch, getState) => {
@@ -49,7 +50,7 @@ export const getSongsAction = (baseEndpoint, headers, query, actionType) => {
   };
 };
 
-export const getInfoAction = (baseEndpoint, headers, query, actionType) => {
+export const searchAction = (baseEndpoint, headers, query, actionType) => {
   return async (dispatch, getState) => {
     try {
       dispatch({
@@ -62,7 +63,7 @@ export const getInfoAction = (baseEndpoint, headers, query, actionType) => {
       });
       if (res.ok) {
         const data = await res.json();
-        // console.log(data);
+        console.log(data);
         dispatch({
           type: actionType,
           payload: data,
