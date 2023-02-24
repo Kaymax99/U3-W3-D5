@@ -234,3 +234,10 @@ ul {
   font-size: 0.8em;
   color: gray;
 }
+
+.bgGreen {
+  margin: 5px;
+  background-color: green;
+  border-radius: 50%;
+  transition: all 0.2s;
+}

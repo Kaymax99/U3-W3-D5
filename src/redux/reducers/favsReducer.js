@@ -14,7 +14,7 @@ export const favoritesReducer = (state = initialState, action) => {
     case REMOVE_FROM_FAV:
       return {
         ...state,
-        songs: state.songs.filter((_, id) => id !== action.payload),
+        songs: state.songs.filter((el) => el.id !== action.payload),
       };
 
     default:

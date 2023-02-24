@@ -1,25 +1,48 @@
 import { Button, Col } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addToPlayerAction } from "../redux/actions";
-import { Heart } from "react-bootstrap-icons";
+import {
+  addToFavAction,
+  addToPlayerAction,
+  removeFromFavAction,
+} from "../redux/actions";
+import { Heart, HeartFill } from "react-bootstrap-icons";
+import { useEffect } from "react";
 
 export const ArtistSong = ({ song }) => {
   const dispatch = useDispatch();
-  //   console.log(songInfo);
+  const favoriteSongs = useSelector((state) => state.favorites.songs);
+
+  const checkFavs = () => {
+    if (favoriteSongs.find((el) => el.id === song.id) === undefined) {
+      dispatch(addToFavAction(song));
+    } else {
+      dispatch(removeFromFavAction(song.id));
+    }
+  };
+
+  //   useEffect(() => {
+  //     console.log(favoriteSongs);
+  //   }, [favoriteSongs]);
+
   return (
     <Col xs={12} md={6} lg={4} xl={3} className="text-center mb-5">
       <Button
         variant="none"
-        className="position-absolute right-0 p-2"
-        onClick={() => dispatch()}
+        className="position-absolute p-2 bgGreen"
+        onClick={() => checkFavs()}
       >
-        <Heart color="white" size={28} />
+        {favoriteSongs.find((el) => el.id === song.id) === undefined ? (
+          <Heart color="white" size={24} />
+        ) : (
+          <HeartFill color="white" size={24} />
+        )}
       </Button>
+
       <Link to={"/album/" + song.album.id}>
         <img className="img-fluid" src={song.album.cover_medium} alt="1" />
       </Link>
-      <p>
+      <div>
         <Button
           variant="none"
           className="text-light"
@@ -35,7 +58,7 @@ export const ArtistSong = ({ song }) => {
             }
           </h5>
         </Button>
-        <Link to={"/album/" + song.album.id}>
+        <Link to={"/album/" + song.album.id} className="text-light">
           <h6>
             {
               song.album.title.length < 16
@@ -44,7 +67,7 @@ export const ArtistSong = ({ song }) => {
             }
           </h6>
         </Link>
-      </p>
+      </div>
     </Col>
   );
 };

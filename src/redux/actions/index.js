@@ -91,3 +91,23 @@ export const addToPlayerAction = (song) => ({
   type: ADD_TO_PLAYER,
   payload: song,
 });
+
+export const addToFavAction = (data) => {
+  return (dispatch, getState) => {
+    const currentState = getState();
+
+    if (
+      currentState.favorites.songs.findIndex((song) => song === data) === -1
+    ) {
+      dispatch({
+        type: ADD_TO_FAV,
+        payload: data,
+      });
+    }
+  };
+};
+
+export const removeFromFavAction = (id) => ({
+  type: REMOVE_FROM_FAV,
+  payload: id,
+});
